@@ -1,0 +1,2 @@
+plot "output.txt" using ($1) with lines, "output.txt" using ($50) with lines, "output.txt" using ($100) with lines, "output.txt" using ($500) with lines
+
