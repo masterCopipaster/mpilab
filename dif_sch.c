@@ -114,25 +114,3 @@ void cross(int i, int j)
 {
    net[i][j].u = net[i - 1][j].u + EXCH_COEF * (net[i - 1][j + 1].u + net[i - 1][j - 1].u - 2 * net[i - 1][j].u) + net[i][j].f; 
 }
-
-MPI_Datatype netnode_to_mpi()
-{
-    // Set-up the arguments for the type constructor
-    MPI_Datatype new_type;
-
-    int count = 4;
-    int blocklens[] = { 1, 1, 1, 1};
-
-    MPI_Aint indices[4];
-    indices[0] = (MPI_Aint) offsetof(netnode, t);
-    indices[1] = (MPI_Aint) offsetof(netnode, x);
-    indices[2] = (MPI_Aint) offsetof(netnode, u);
-    indices[3] = (MPI_Aint) offsetof(netnode, f);
-
-    MPI_Datatype old_types[] = {MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE};
-
-    MPI_Type_struct(count,blocklens,indices,old_types,&new_type);
-    MPI_Type_commit(&new_type);
-
-    return new_type;
-}

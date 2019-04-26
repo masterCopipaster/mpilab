@@ -4,7 +4,7 @@
 #include <mpi.h>
 #include <stddef.h>
 
-#define PARALLEL 
+//#define PARALLEL 
 typedef struct netnode_st
 {
     double t;
@@ -19,9 +19,9 @@ double func(double t, double x);
 double xini(double x);
 double tini(double t);
 
-#define TSIZE 1000
+#define TSIZE 10000
 #define XSIZE 102
-#define TSTEP 1.0
+#define TSTEP 0.01
 #define XSTEP 0.0001
 #define EXCH_COEF (TCOEFF * TSTEP / (XSTEP * XSTEP)) 
 
@@ -73,12 +73,12 @@ double func(double t, double x)
 
 double xini(double x)
 {
-    return 0;
+    return 100;
 }
 
 double tini(double t)
 {
-    return 100.0;
+    return 0;
 }
 
 void net_init()
@@ -166,7 +166,7 @@ void parallel(int i)
     netnode* base = &net[i][abs_start];
     int j;
     sequential(i, abs_start, abs_end);
-    MPI_Isend(base, len, NETNODE, rank, 0, MPI_COMM_WORLD, &rq);
+    MPI_Ibcast(base, len, NETNODE, rank, MPI_COMM_WORLD, &rq);
     printf("barrier %d\n", i);
     for(j = 0; j < np - 1; j++)
     {
